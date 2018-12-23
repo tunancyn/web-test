@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.IPaperService" >
+  <resultMap id="BaseResultMap" type="com.bean.Paper" >
+    <id column="paper_id" property="paperId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="publish" property="publish" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    paper_id, name
+  </sql>
+  
+  <select id="selectNum" resultType="java.lang.Integer" >
+    select count(paper_id) from paper;
+  </select>
+  
+   <select id="selectjavapages" parameterType="java.util.Map"  resultType="com.bean.Paper">
+    select * from paper limit #{begin},#{pages};<!--where paper_id between (#{page}-1)*3 and #{page}*3;1 and 3;   -->
+  </select>
+  <update id="updatePublish" parameterType="java.util.Map" >
+    update paper
+    set publish=#{publish}
+    where name = #{name}
+  </update>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from paper
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from paper
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bean.Paper" >
+    insert into paper (paper_id, name, publish)
+    values (#{paperId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{publish,jdbcType=BIT} )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bean.Paper" >
+    insert into paper
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="paperId != null" >
+        paper_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="publish != null" >
+        publish,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="paperId != null" >
+        #{paperId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="publish != null" >
+        #{publish,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bean.Paper" >
+    update paper
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="publish != null" >
+        publish = #{publish,jdbcType=BIT},
+      </if>
+    </set>
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bean.Paper" >
+    update paper
+    set name = #{name,jdbcType=VARCHAR},
+      publish = #{publish,jdbcType=BIT}
+    where paper_id = #{paperId,jdbcType=INTEGER}
+  </update>
+</mapper>

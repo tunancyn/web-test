@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.questiontypeService" >
+  <resultMap id="BaseResultMap" type="com.bean.questiontype" >
+    <id column="question_id" property="questionId" jdbcType="INTEGER" />
+    <result column="tablename" property="tablename" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_id, tablename
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from questiontype
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from questiontype
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.bean.questiontype" >
+    insert into questiontype (question_id, tablename)
+    values (#{questionId,jdbcType=INTEGER}, #{tablename,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bean.questiontype" >
+    insert into questiontype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionId != null" >
+        question_id,
+      </if>
+      <if test="tablename != null" >
+        tablename,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionId != null" >
+        #{questionId,jdbcType=INTEGER},
+      </if>
+      <if test="tablename != null" >
+        #{tablename,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bean.questiontype" >
+    update questiontype
+    <set >
+      <if test="tablename != null" >
+        tablename = #{tablename,jdbcType=CHAR},
+      </if>
+    </set>
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bean.questiontype" >
+    update questiontype
+    set tablename = #{tablename,jdbcType=CHAR}
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </update>
+</mapper>
